@@ -1,0 +1,56 @@
+{% extends 'root.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+{% block content %}
+    <section class="content">
+        <!-- About Me Box -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">使用说明</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <strong><i class="fa fa-book mr-1"></i>基础用法</strong>
+            <p class="text-muted">
+              1.在浏览其中输入网址根目录，进入数据采集页面。<br/>
+              2.输入起始日期和终止日期，格式为8位纯数字，例“YYYYMMDD”，点击开始进行基础数据采集,数据采集完毕后会有采集文件和缺失文件显示。<br/>
+              3.在数据采集后点击文件合并，将基础文件进行合并。<br/>
+              4.在以上步骤完成后可以在列表和dashboard页面查看数据分析结果。<br/>
+            </p>
+
+            <hr>
+
+            <strong><i class="fa fa-map-marker mr-1"></i>模块说明</strong>
+
+            <p class="text-muted">
+              1.列表：查看网络和核心链路的全量列表<br/>
+              2.dashboard：查看网络链路的可视化统计汇总结果，<br/>
+            </p>
+
+            <hr>
+
+            <strong><i class="fa fa-pencil mr-1"></i> 版本更新</strong>
+
+            <p class="text-muted">
+              v1.0：完成基础数据采集，列表呈现及数据分析功能
+            </p>
+
+            <hr>
+
+            <strong><i class="fa fa-file-text-o mr-1"></i> 注意事项</strong>
+
+            <p class="text-muted">
+                1.在未完成基础数据采集之前不要加载其他页面，会出现错误。<br/>
+                2.数据可能会迭代多个日期，相关资源可能会重复计数，为避免错误尽可能采用一日数据。<br/>
+                3.本系统需要连接内网采集数据，在河南移动以外的网络数据采集功能不可用。<br/>
+            </p>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </section>
+{% endblock content%}
+
+</html>

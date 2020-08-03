@@ -1,0 +1,537 @@
+{% extends 'root.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+{% block content %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-9">
+            <h1>地市指标分析 </h1>
+          </div>
+          <div class="col-sm-3">
+          <form method="POST" action="../cityAna/">
+                <div class="row">
+                  <div class="col-5">
+                    <div class="input-group input-group-sm">
+                         <button class="btn btn-info"><i class="fa fa-home"></i></button>
+                         <select name="cityselect">
+                            <option>请选择城市</option>
+                            {% for each in citylist %}
+                            <option>{{ each }}</option>
+                            {% endfor %}
+                         </select>
+                    </div>
+                  </div>
+
+                  <div class="col-7">
+                   <div class="input-group input-group-sm">
+                         <button class="btn btn-info"><i class="fa fa-calendar"></i></button>
+                         <select name="dateselect">
+                            <option>请选择日期</option>
+                            {% for each in datelist %}
+                            <option>{{ each }}</option>
+                            {% endfor %}
+                         </select>
+                         <button type="submit" class="btn btn-info" >Go</button>
+                    </div>
+
+                  </div>
+                </div>
+
+
+          </form>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+
+<!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-11">
+                          <h3 class="card-title">环网指标-{{ currentcity }}-{{ currentdate }}</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-info elevation-1"><i class="fa fa-gear"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">数量</span>
+                <span class="info-box-number">
+                  {{ ringcount }}
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-percent"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">峰值平均利用率</span>
+                <span class="info-box-number">{{ ringpeak }}<small>%</small></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fa fa-shopping-cart"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">平均越限数量</span>
+                <span class="info-box-number">{{ overringcount }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">越限占比</span>
+                <span class="info-box-number">{{ overring_ratio }}<small>%</small></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-11">
+                          <h3 class="card-title">链路指标-{{ currentcity }}-{{ currentdate }}</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-info elevation-1"><i class="fa fa-gear"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">数量</span>
+                <span class="info-box-number">
+                  {{ linkcount }}
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-percent"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">峰值平均利用率</span>
+                <span class="info-box-number">{{ linkpeak }}<small>%</small></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fa fa-shopping-cart"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">平均越限数量</span>
+                <span class="info-box-number">{{ overlinkcount }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">越限占比</span>
+                <span class="info-box-number">{{ overlink_ratio }}<small>%</small></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+        <!-- Main row2 -->
+        <div class="row">
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-6 connectedSortable">
+                <!-- 绘制右2图开始 -->
+                <div id="left2" style="height:500px;"></div>
+                <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('left2'));
+
+                    // 指定图表的配置项和数据
+                    var option = {
+                         title: {
+                         text: '{{ currentcity }}-网络峰值利用率平均值趋势'
+                         },
+                         tooltip: {
+                            trigger: 'axis'
+                        },
+                         legend: {
+                            data:['峰值利用率']
+                        },
+                         grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                         toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                         xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisLabel:{
+                                interval:0,
+                                rotate:45
+                            },
+                            axisTick:{
+                                show:false
+                            },
+                            data: [
+                                {% for each in ringpeak_bycity.index %}
+                                        '{{ each }}',
+                                    {% endfor %}
+                            ]
+                        },
+                         yAxis: {
+                            type: 'value'
+                        },
+                         series: [
+                            {
+                                color:'#17A2B8',
+                                name:'越限网络数量',
+                                type:'line',
+                                stack: '总量',
+                                data:[
+                                    {% for each in ringpeak_bycity.values %}
+                                        '{{ each }}',
+                                    {% endfor %}
+                                ]
+                            },
+                        ]
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                </script>
+                <!-- 绘制右1图结束 -->
+          </section>
+          <section class="col-lg-6 connectedSortable">
+                <!-- 绘图开始 -->
+                <div id="right2" style="height:500px;"></div>
+                <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('right2'));
+
+                    // 指定图表的配置项和数据
+                    var option = {
+                         title: {
+                         text: '{{ currentcity }}-核心链路峰值平均利用率趋势'
+                         },
+                         tooltip: {
+                            trigger: 'axis'
+                        },
+                         legend: {
+                            data:[]
+                        },
+                         grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                         toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                         xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisLabel:{
+                                interval:0,
+                                rotate:45
+                            },
+                            axisTick:{
+                                show:false
+                            },
+                            data: [
+                                {% for each in linkpeak_bycity.index %}
+                                        '{{ each }}',
+                                    {% endfor %}
+                            ]
+                        },
+                         yAxis: {
+                            type: 'value'
+                        },
+                         series: [
+                            {
+                                color:'#28A745',
+                                name:'越限核心链路数量',
+                                type:'line',
+                                stack: '总量',
+                                data:[
+                                    {% for each in linkpeak_bycity.values %}
+                                        '{{ each }}',
+                                    {% endfor %}
+                                ]
+                            },
+                        ]
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                </script>
+                <!-- 绘制右1图结束 -->
+          </section>
+
+          <!-- right col -->
+        </div>
+        <div class="row">
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-6 connectedSortable">
+                <div id="left3" style="height:500px;"></div>
+                <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('left3'));
+
+                    // 指定图表的配置项和数据
+                    var option = {
+                         title: {
+                         text: '{{ currentcity }}-{{ currentdate }}-网络峰值利用率正态分布'
+                         },
+                         tooltip: {
+                            trigger: 'axis'
+                        },
+
+                         grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                         toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                         xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisLabel:{
+                                interval:99,
+                                rotate:45
+                            },
+                            axisTick:{
+                                show:false
+                            },
+                            data: [
+                                {% for each in ringnormx %}
+                                        '{{ each }}',
+                                    {% endfor %}
+                            ]
+                        },
+                         yAxis: {
+                            type: 'value'
+                        },
+                         series: [
+                            {
+                                color:'#17A2B8',
+                                name:'网络峰值利用率正态分布',
+                                type:'line',
+                                stack: '总量',
+                                data:[
+                                    {% for each in ringnormy %}
+                                        '{{ each }}',
+                                    {% endfor %}
+                                ]
+                            },
+                        ]
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                </script>
+                <!-- 绘制右1图结束 -->
+          </section>
+          <section class="col-lg-6 connectedSortable">
+                <!-- 绘图开始 -->
+                <div id="left4" style="height:500px;"></div>
+                <script type="text/javascript">
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('left4'));
+
+                    // 指定图表的配置项和数据
+                    var option = {
+                         title: {
+                         text: '{{ currentcity }}-{{ currentdate }}-核心链路峰值利用率正态分布'
+                         },
+                         tooltip: {
+                            trigger: 'axis'
+                        },
+                         legend: {
+                            data:[]
+                        },
+                         grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                         toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                         xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            axisLabel:{
+                                interval:99,
+                                rotate:45
+                            },
+                            axisTick:{
+                                show:false
+                            },
+                            data: [
+                                {% for each in linknormx %}
+                                        '{{ each }}',
+                                    {% endfor %}
+                            ]
+                        },
+                         yAxis: {
+                            type: 'value'
+                        },
+                         series: [
+                            {
+                                color:'#28A745',
+                                name:'核心链路峰值利用率正态分布',
+                                type:'line',
+                                stack: '总量',
+                                data:[
+                                    {% for each in linknormy %}
+                                        '{{ each }}',
+                                    {% endfor %}
+                                ]
+                            },
+                        ]
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                </script>
+                <!-- 绘制右1图结束 -->
+          </section>
+
+          <!-- right col -->
+        </div>
+        <div class="card card-default">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="card-title">
+                            <font color="#a52a2a"><strong><i class="fa fa-file"></i> &nbsp;&nbsp;利用率情况分析</strong></font>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="callout callout-info">
+                            <h5><font color="#008b8b" ><strong>环网利用率分析</strong></font></h5>
+                                <font color="red"><strong></strong></font>
+                                <p>{{ currentcity }}在{{ currentdate }}的环网峰值利用率均值为<font color="red"><strong>{{ ringmu|stringformat:".2f" }}%</strong> </font>，
+                                    方差为<font color="red" ><strong>{{ ringsigma|stringformat:".2f" }}%</strong></font>，
+                                    有效样本记录数量为<font color="red" ><strong>{{ ringfiltercount|stringformat:"d" }}</strong></font>条，
+                                    网络越限概率<font color="red"><strong>{{ ringoverratio|stringformat:".2e" }}</strong></font>，
+                                    24小时内网络越限超标概率为<font color="red"><strong>{{ ringdayoverratio|stringformat:".3f" }}</strong></font>，
+                                    一周内网络越限超标概率为<font color="red"><strong>{{ ringweekoverratio|stringformat:".3f" }}</strong></font>，
+                                    一月内网络越限超标概率为<font color="red"><strong>{{ ringmonthoverratio|stringformat:".3f" }}</strong></font>，
+
+
+                                </p>
+                            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="callout callout-success">
+                            <h5><font color="#006400"><strong>链路利用率分析</strong> </font></h5>
+                                <p>{{ currentcity }}在{{ currentdate }}的
+                                    环网峰值利用率均值为<font color="red"><strong>{{ linkmu|stringformat:".2f" }}%</strong></font>，
+                                    方差为<font color="red"><strong>{{ linksigma|stringformat:".2f" }}</strong></font>%，
+                                    有效样本记录数量为<font color="red" ><strong>{{ linkfiltercount|stringformat:"d" }}</strong></font>条，
+                                    链路越限概率为<font color="red"><strong>{{ linkoverratio|stringformat:".2e" }}</strong></font>，
+                                     24小时内链路越限超标概率为<font color="red"><strong>{{ linkdayoverratio|stringformat:".3f" }}</strong></font>，
+                                    一周内链路越限超标概率为<font color="red"><strong>{{ linkweekoverratio|stringformat:".3f" }}</strong></font>，
+                                    一月内链路越限超标概率为<font color="red"><strong>{{ linkmonthoverratio|stringformat:".3f" }}</strong></font>，
+                                </p>
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+</div>
+
+
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+    {% endblock content%}
+</html>

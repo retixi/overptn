@@ -1,0 +1,137 @@
+{% extends 'root.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+{% block content %}
+
+    <!-- Main content -->
+        <div class="row">
+            <div class="col-md-9">
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <h3>
+                            数据采集
+                        </h3>
+                    </div>
+                </section>
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row ">
+                          <div class="col-md-12">
+                            <div class="card card-info">
+                              <div class="card-header">
+                                <h3 class="card-title">日期输入</h3>
+                              </div>
+                              <!-- /.card-header -->
+                              <!-- form start -->
+                              <form class="form-horizontal" action="../dateInput/" method="post">
+                                <div class="card-body">
+                                  <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">起始日期</label>
+                                    <div class="col-sm-10">
+                                      <input type="text" class="form-control" name="startdate" placeholder={{ startdate }}>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2 control-label">结束日期</label>
+
+                                    <div class="col-sm-10">
+                                      <input type="text" class="form-control" name="enddate" placeholder={{ enddate }}>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                  <button type="submit" class="btn btn-info float-md-none">开始采集</button>
+                                </div>
+                                <!-- /.card-footer -->
+                              </form>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                               <div class="card card-success">
+                              <div class="card-header">
+                                <h3 class="card-title">获取文件列表</h3>
+                              </div>
+                              <!-- /.card-header -->
+                              <div class="card-body">
+                                <form role="form">
+                                  <!-- textarea -->
+                                  <div class="form-group">
+                                    <textarea class="form-control" rows="15" placeholder="Enter ..." readonly>
+                                    {% if downloads %}{% for each in downloads %}{{ each }}
+                                    {% endfor %}{% endif %}</textarea>
+                                  </div>
+                                </form>
+                              </div>
+                              <!-- /.card-body -->
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                             <div class="card card-danger">
+                              <div class="card-header">
+                                <h3 class="card-title">缺失文件列表</h3>
+                              </div>
+                              <!-- /.card-header -->
+                              <div class="card-body">
+                                  <div class="form-group"
+                                    <form role="form">
+                                      <!-- textarea -->
+                                        <textarea class="form-control" rows="15" placeholder="Enter ..." readonly>
+                                          {% if missfiles %}{% for each in missfiles %}{{ each }}
+                                          {% endfor %}{% endif %}</textarea>
+                                    </form>
+                                  </div>
+                              </div>
+                              <!-- /.card-body -->
+                            </div>
+                          </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-3">
+                <section class="content-header">
+                    <div class="container-fluid">
+                        <h3>
+                            文件合并
+                        </h3>
+                    </div>
+                </section>
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row ">
+                          <div class="col-md-12">
+                            <div class="card card-info">
+                              <div class="card-header">
+                                <h3 class="card-title">已有数据合并</h3>
+                              </div>
+                              <!-- /.card-header -->
+                              <div class="card-body">
+                                    <a type="button" class="btn btn-info btn-block" href="../dataCombine/">开始合并</a>
+                              </div>
+                              <div class="card-body">
+                                <!-- textarea -->
+                                  <div class="form-group">
+                                      <textarea class="form-control" rows="25" placeholder="Enter ..." readonly>{{ combinestatus }}</textarea>
+
+                                  </div>
+                              </div>
+                              <!-- /.card-body -->
+                            </div>
+                          </div>
+
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+    <!-- /.content -->
+{% endblock content%}
+
+</html>

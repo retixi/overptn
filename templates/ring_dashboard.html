@@ -1,0 +1,339 @@
+{% extends 'root.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+{% block content %}
+    <script  type="text/javascript"
+              src="http://api.map.baidu.com/api?v=2.0&ak=A6yoP2kGBuFM2xu6qQZseS3dkEfiGrHA" ></script>
+    <!--引入百度热力图-->
+    <script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+    <script src={% static "henan.js" %}></script>
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-md-5">
+            <h1>网络</h1>
+          </div>
+          <div class="col-md-3">
+          <form method="POST" action="../ring_dashboard/">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <button type="button" class="btn btn-info">输入日期</button>
+                </div>
+                <select name="dateselect">
+                    <option>请选择日期</option>
+                    {% for each in datelist %}
+                    <option>{{ each }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-info btn-flat">Go!</button>
+            </div>
+          </form>
+          </div>
+          <div class="col-md-3">
+             <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                  <button type="button" class="btn btn-danger"><i class="fa fa-calendar"></i> 当前日期</button>
+              </div>
+              <!-- /btn-group -->
+              <input type="text" class="form-control" value="{{ currentdate }}" disabled>
+            </div>
+
+        </div>
+          <div class="col-md-1">
+              <a href="../ring_dashboard?sendemail=1"><button type="button" class="btn btn-success" >发送督办</button></a>
+           </div>
+          </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{ count }}</h3>
+
+                <p>网络数量</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="../ringList" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+{#                <h3>53<sup style="font-size: 20px">%</sup></h3>#}
+                    <h3>{{ overcount }}</h3>
+                <p>越限网络数量</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <a href="../overFlow" class="small-box-footer">more info<i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>{{ overratio }}<sup style="font-size: 20px">%</sup></h3>
+                <p>网络越限占比</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+              <a href="../overFlow" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{ peakavg }}<sup style="font-size: 20px">%</sup></h3>
+                <p>峰值平均利用率</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a href="../ringList" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+          <!-- Left col -->
+          <section class="col-lg-4 col-12 ">
+            <!-- 绘制左1图开始 -->
+            <div id="left1" style="height:500px;"></div>
+            <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('left1'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '全网PTN网络数量分布'
+                    },
+                    tooltip: {},
+                    toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                    xAxis: {
+                        axisTick:{
+                            show:false
+                        },
+                        axisLabel:{
+                            interval:0,
+                            rotate:45
+                        },
+                        nameRotate:45,
+                        type:"category",
+                        data: [
+                            {% for each in ringcount.index %}
+                            "{{ each }}",
+                            {% endfor %}
+                        ]
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '网络数量',
+                        type: 'bar',
+                        color:'green',
+                        data: [
+                            {% for each in ringcount.values %}
+                            "{{ each }}",
+                            {% endfor %}
+                        ]
+                    }]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            </script>
+            <!-- 绘制左1图结束 -->
+
+          </section>
+          <section class="col-lg-4 col-12 ">
+            <!-- 绘制左图2开始 -->
+            <div id="left2" style="height:500px;">
+                <script type="text/javascript">
+            var mydata = [
+                {% for each in citycount %}
+                    {"name": "{{ each.name }}", "value": "{{each.value}}"},
+                {% endfor %}
+
+
+
+
+                ];
+            var optionMap = {
+{#                backgroundColor: '#FFFFFF',#}
+                title: {
+                    text: '全省网络峰值利用率平均',
+                    subtext: '',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'item'
+                },
+
+                //左侧小导航图标
+                visualMap: {
+
+                    show : true,
+                    x: 'left',
+                    y: 'center',
+                    splitList: [
+                        {start: 1, end:3},{start: 4, end: 6},
+                        {start: 7, end: 9},{start: 10, end: 12},
+                        {start: 13},
+                    ],
+                    color: ['#8a2b0f','#ce4117','#f3a892','#f7c6b7','#fbe2db']
+                },
+
+                //配置属性
+                series: [{
+                    name: '数据',
+                    type: 'map',
+                    mapType: '河南',
+                    roam: true,
+                    label: {
+                        normal: {
+                            show: true  //省份名称
+                        },
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    data:mydata  //数据
+                }]
+            };
+        //初始化echarts实例
+        var myChart = echarts.init(document.getElementById('left2'));
+
+        //使用制定的配置项和数据显示图表
+        myChart.setOption(optionMap);
+
+            </script>
+
+
+            </div>
+            <!-- 绘制左图2结束 -->
+          </section>
+          <section class="col-lg-4 col-12 ">
+            <!-- 绘制左图3开始 -->
+            <div id="left3" style="height:500px;">
+                 <script type="text/javascript">
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('left3'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                     title: {
+                     text: '各地市利用率分布'
+                     },
+                     tooltip: {
+                        trigger: 'axis'
+                    },
+{#                     legend: {#}
+{#                        data:['越限网络数量']#}
+{#                    },#}
+                     grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                     toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                     xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        axisLabel:{
+                            interval:0,
+                            rotate:45
+                        },
+                        axisTick:{
+                            show:false
+                        },
+                        show:false,
+                        data: [
+                            {% for each in ringcount_by_last_date.index %}
+                                    '{{ each }}',
+                                {% endfor %}
+                        ]
+                    },
+                     yAxis: {
+                        type: 'value'
+                    },
+                     series: [
+                        {
+                            name:'越限网络数量',
+                            type:'line',
+                            showSymbol: false,
+                            data:[
+                                {% for each in ringcount_by_last_date.values %}
+                                    '{{ each }}',
+                                {% endfor %}
+                            ]
+                        },
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            </script>
+            </div>
+            <!-- 绘制左图3结束 -->
+          </section>
+
+        </div>
+        <!-- /.row (main row) -->
+
+        <!-- Main row2 -->
+        <div class="row">
+          <!-- Left col -->
+          <section class="col-lg-5 col-12">
+            <!-- 绘制右1图开始 -->
+            <div id="left2" style="height:500px;"></div>
+
+            <!-- 绘制右1图结束 -->
+          </section>
+          <!-- /.Left col -->
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-7 col-12 connectedSortable">
+            <!-- 绘制右2图开始 -->
+            <div id="right2" style="height:500px;"></div>
+
+            <!-- 绘制右2图结束 -->
+          </section>
+          <!-- right col -->
+        </div>
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+    {% endblock content%}
+</html>

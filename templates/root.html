@@ -1,0 +1,300 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+{% block head %}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>业务流量管理系统</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href={% static "plugins/font-awesome/css/font-awesome.min.css" %}>
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href={% static "dist/css/adminlte.min.css" %}>
+  <!-- iCheck -->
+  <link rel="stylesheet" href={% static "plugins/iCheck/flat/blue.css" %}>
+  <!-- Morris chart -->
+  <link rel="stylesheet" href={% static "plugins/morris/morris.css" %}>
+  <!-- jvectormap -->
+  <link rel="stylesheet" href={% static "plugins/jvectormap/jquery-jvectormap-1.2.2.css" %}>
+  <!-- Date Picker -->
+  <link rel="stylesheet" href={% static "plugins/datepicker/datepicker3.css" %}>
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href={% static "plugins/daterangepicker/daterangepicker-bs3.css" %}>
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href={% static "plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" %}>
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- DataTables -->
+  <link rel="stylesheet" href={% static "plugins/datatables/dataTables.bootstrap4.css" %}>
+    <!-- echart.js -->
+    <script src={% static "plugins/echarts/echarts.min.js" %}></script>
+
+
+
+</head>
+{% endblock head%}
+
+{% block body %}
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+<!-- Button trigger modal -->
+
+    {% block navbar %}
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom fixed">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="../userhelp" class="nav-link">帮助</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="mailto:rentingxi@ha.chinamobile.com" class="nav-link">联系我</a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+            <i class="fa fa-th-large"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+     {% endblock navbar%}
+
+    {% block sidebar %}
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index3.html" class="brand-link">
+      <img src={% static "dist/img/mobile_logo.png"%} alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">业务流量管理系统</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src={% static "dist/img/mario.jpg" %} class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">任庭熹</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="{{ sidebarstatus.collect }}">
+            <a href="../dataCollect" class="{{ sidebarstatus.collect0 }}">
+              <i class="nav-icon fa fa-database"></i>
+              <p>
+                数据采集
+              </p>
+            </a>
+          </li>
+          <li class="{{ sidebarstatus.table }} has-treeview">
+            <a href="#" class="{{ sidebarstatus.table0 }}">
+              <i class="nav-icon fa fa-th"></i>
+              <p>
+                数据列表
+                <i class="right fa fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../ringList" class="{{ sidebarstatus.table1 }}">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>PTN环网流量列表</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../linkList" class="{{ sidebarstatus.table2 }}">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>PTN链路流量详表</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="{{ sidebarstatus.dashboard }} has-treeview">
+            <a href="#" class="{{ sidebarstatus.dashboard0 }}">
+              <i class="nav-icon fa fa-dashboard"></i>
+              <p>
+                Dashboard
+                <i class="right fa fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../ring_dashboard" class="{{ sidebarstatus.dashboard1 }}">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>Dashboard-环网</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../link_dashboard" class="{{ sidebarstatus.dashboard2 }}">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>Dashboard-核心链路</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="{{ sidebarstatus.datamap }} has-treeview">
+            <a href="#" class="{{ sidebarstatus.datamap0 }}">
+              <i class="nav-icon fa fa-map"></i>
+              <p>
+                数据地图
+                <i class="right fa fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="../dataMap" class="{{ sidebarstatus.datamap1 }}">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>利用率热度地图</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../dataMapHeat" class="{{ sidebarstatus.datamap2 }}">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>基站分布地图</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="{{ sidebarstatus.favorlink }}">
+            <a href="../outLink" class="{{ sidebarstatus.favorlink0}}">
+              <i class="nav-icon fa fa-address-card"></i>
+              <p>
+                友情链接
+              </p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+    {% endblock sidebar%}
+
+<div class="content-wrapper">
+        {% block modal %}
+
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">文件导出</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form method="get" action="{{ url }}">
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">选择日期</label>
+
+                    <select class="form-control" name="dateselect">
+                        <option>{{ currentdate }}</option>
+                        {% for each in datelist %}
+                        <option>{{ each }}</option>
+                        {% endfor %}
+                        <option>all</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">选择路径</label>
+                    <input type="text" class="form-control" name="pathselect" placeholder="默认路径为系统目录下的excel文件夹">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {% endblock modal %}
+
+    {% block content %}
+          <!-- Content Wrapper. Contains page content -->
+          {# yuliu #}
+          <!-- /.content-wrapper -->
+    {% endblock content%}
+</div>
+
+    {% block footer %}
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2018 <a href="http://adminlte.io">任庭熹</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>版本</b> 1.0.0-alpha
+    </div>
+  </footer>
+    {% endblock footer%}
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+    {% block script %}
+<!-- jQuery -->
+<script src={% static "plugins/jquery/jquery.min.js" %}></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src={% static "plugins/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+<!-- Morris.js charts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src={% static "plugins/morris/morris.min.js" %}></script>
+<!-- Sparkline -->
+<script src={% static "plugins/sparkline/jquery.sparkline.min.js" %}></script>
+<!-- jvectormap -->
+<script src={% static "plugins/jvectormap/jquery-jvectormap-1.2.2.min.js" %}></script>
+<script src={% static "plugins/jvectormap/jquery-jvectormap-world-mill-en.js" %}></script>
+<!-- jQuery Knob Chart -->
+<script src={% static "plugins/knob/jquery.knob.js" %}></script>
+<!-- daterangepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+<script src={% static "plugins/daterangepicker/daterangepicker.js" %}></script>
+<!-- datepicker -->
+<script src={% static "plugins/datepicker/bootstrap-datepicker.js" %}></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src={% static "plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" %}></script>
+<!-- Slimscroll -->
+<script src={% static "plugins/slimScroll/jquery.slimscroll.min.js" %}></script>
+<!-- FastClick -->
+<script src={% static "plugins/fastclick/fastclick.js" %}></script>
+<!-- AdminLTE App -->
+<script src={% static "dist/js/adminlte.js" %}></script>
+<!-- AdminLTE for demo purposes -->
+<script src={% static "dist/js/demo.js" %}></script>
+
+    {% endblock script %}
+</div>
+</body>
+{% endblock body%}
+</html>
